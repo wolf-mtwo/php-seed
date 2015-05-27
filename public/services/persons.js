@@ -1,12 +1,9 @@
 'use strict';
 
-angular.module('seedApp').factory('Person', ['$resource',
+angular.module('seedApp').factory('Persons', ['$resource',
   function($resource) {
     return $resource('./api/demo/person', {
     }, {
-      // save: {
-      //     method: 'POST'
-      // },
       get: {
         method: 'GET',
         isArray: true
