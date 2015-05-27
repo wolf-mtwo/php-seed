@@ -1,19 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
-* Example
-*
-* This is an example of a few basic user interaction methods you could use
-* all done with a hardcoded array.
-*
-* @package		CodeIgniter
-* @subpackage	Rest Server
-* @category	Controller
-* @author		Phil Sturgeon
-* @link		http://philsturgeon.co.uk/code/
-*/
-
-// This can be removed if you use __autoload() in config.php OR use Modular Extensions
 require APPPATH.'/libraries/REST_Controller.php';
 
 class Demo extends REST_Controller
@@ -24,36 +10,40 @@ class Demo extends REST_Controller
     parent::__construct();
 
     // load model
-    $this->load->model('personModel','',TRUE);
+    $this->load->database();
+    $this->load->model('persons');
   }
 
-  function person_get()
+  function persons_get()
   {
-    $persons = $this->personModel->get_paged_list(100)->result();
+    $id = $this->get('id');
+    if (!empty($id)) {
+      $person = $this->persons->get_by_id($id);
+      if (empty($person)) {
+        $this->response(array('error' => 'Couldn\'t find any person!'), 404);
+      }
+      $this->response($person, 200);
+    }
+    $persons = $this->persons->get_all();
     $this->response($persons, 200);
   }
 
-  function person_post()
+  function persons_post()
   {
     $input = (array)json_decode(file_get_contents("php://input"));
-    // save
-    $person = $this->personModel->save($input);
-    $this->response($person, 200); // 200 being the HTTP response code
+    $newPerson = $input;
+    $person = $this->persons->save($newPerson);
+    $this->response($person, 200);
   }
 
-  function user_delete()
+  function persons_delete()
   {
-  }
-
-  function users_get()
-  {
-  }
-
-  public function send_post()
-  {
-  }
-
-  public function send_put()
-  {
+    $id = $this->get('id');
+    $person = $this->persons->delete($id);
+    if (!is_null($person)) {
+      $this->response($person, 200);
+    } else {
+      $this->response(array('error' => 'Couldn\'t find any person!'), 404);
+    }
   }
 }

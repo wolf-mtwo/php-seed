@@ -1,26 +1,12 @@
 <?php
 
-class Persons extends CI_Model {
+require APPPATH . '/models/generic/master.php';
 
-  // table name
-  private $tbl= 'person';
+class Persons extends Master {
 
-  // get persons with paging
-  function getAll()
+  function __construct()
   {
-    return $this->db->get($this->tbl);
+    // Construct our parent class
+    parent::__construct('person');
   }
-
-  // add new person
-  function save($person)
-  {
-    $this->db->insert($this->tbl, $person);
-  }
-
-  function delete($id)
-  {
-    $this->db->where('id_person', $id);
-    $this->db->delete($this->tbl);
-  }
-
 }

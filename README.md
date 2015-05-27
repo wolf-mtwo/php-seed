@@ -4,7 +4,8 @@ PHP Demo
 * create a database named **demo**
 * create a table named **person**
 ```
-# confif/DB.md
+# copy from here the person table
+# config/DB.md
 ```
 
 ## update database access config
