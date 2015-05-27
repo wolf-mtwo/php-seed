@@ -2,11 +2,17 @@
 
 angular.module('seedApp').factory('Persons', ['$resource',
   function($resource) {
-    return $resource('./api/demo/person', {
+    var url = './api/demo/persons/';
+    return $resource(url, {
     }, {
       get: {
+        url: url + 'id/:id',
         method: 'GET',
         isArray: true
+      },
+      delete: {
+        url: url + 'id/:id',
+        method: 'DELETE'
       },
       update: {
         method: 'PUT'
